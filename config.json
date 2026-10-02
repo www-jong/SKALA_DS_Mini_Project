@@ -1,0 +1,192 @@
+{
+  "seed": 20261001,
+  "features": {
+    "core": [
+      "dq_logvar",
+      "q2",
+      "q_slope_last",
+      "ir_delta",
+      "tmax_mean",
+      "i_high"
+    ],
+    "expected_missing": {
+      "dq_logvar": 0,
+      "q2": 0,
+      "q_slope_last": 0,
+      "ir_delta": 6,
+      "tmax_mean": 0,
+      "i_high": 0
+    },
+    "metadata_and_targets": [
+      "cell",
+      "batch",
+      "policy",
+      "policy_group",
+      "newstructure",
+      "life",
+      "target_log10"
+    ],
+    "definitions": {
+      "dq_logvar": {
+        "source": "cycles.Qdlin[99]-cycles.Qdlin[9]",
+        "statistic": "log10(var(ddof=1))",
+        "voltage_points": 1000,
+        "voltage_range_v": [
+          3.5,
+          2.0
+        ],
+        "variance_input_unit": "Ah^2"
+      },
+      "q2": {
+        "source": "summary.QDischarge at cycle 2",
+        "unit": "Ah"
+      },
+      "q_slope_last": {
+        "source": "OLS slope of summary.QDischarge vs cycle, 91..100",
+        "unit": "Ah/cycle"
+      },
+      "ir_delta": {
+        "source": "summary.IR at cycle100 - cycle10; IR<=0 treated missing",
+        "unit": "ohm"
+      },
+      "tmax_mean": {
+        "source": "mean of finite positive summary.Tmax, cycles2..100",
+        "unit": "degC"
+      },
+      "i_high": {
+        "source": "mean of cycle10 and cycle100 time-weighted fractions above 5C",
+        "unit": "fraction"
+      }
+    },
+    "ablations": {
+      "dq_only": [
+        "dq_logvar"
+      ],
+      "capacity": [
+        "dq_logvar",
+        "q2",
+        "q_slope_last"
+      ],
+      "capacity_ir_temperature": [
+        "dq_logvar",
+        "q2",
+        "q_slope_last",
+        "ir_delta",
+        "tmax_mean"
+      ],
+      "core6": [
+        "dq_logvar",
+        "q2",
+        "q_slope_last",
+        "ir_delta",
+        "tmax_mean",
+        "i_high"
+      ]
+    },
+    "alternatives_from_features_csv": {
+      "dq_summary": [
+        "dq_logabsmin",
+        "dq_mean",
+        "dq_skew",
+        "dq_kurtosis"
+      ],
+      "capacity": [
+        "q_ratio",
+        "q_slope"
+      ],
+      "resistance_temperature": [
+        "ir_mean",
+        "tavg_mean",
+        "temp_span"
+      ],
+      "charging": [
+        "i_mean",
+        "i_std",
+        "i_peak",
+        "charge_time",
+        "c1",
+        "c2",
+        "soc_switch",
+        "c_eff"
+      ],
+      "tag_sensitivity": [
+        "newstructure"
+      ]
+    },
+    "redundant_do_not_combine": [
+      "dq_logstd (exactly 0.5*dq_logvar)",
+      "dq_logvar/dq_mean/dq_logabsmin are strongly collinear; compare alternatives"
+    ],
+    "forbidden_inputs": [
+      "cell",
+      "batch",
+      "file",
+      "index_1based",
+      "policy",
+      "policy_group",
+      "life",
+      "life_raw",
+      "target_log10",
+      "included",
+      "exclusion",
+      "n_cycles",
+      "n_cycle_records",
+      "q_end",
+      "q_invalid_count",
+      "summary_cycle_contiguous",
+      "first_below_088",
+      "knee",
+      "knee_fraction",
+      "knee_gain",
+      "knee_smoothing_span",
+      "early_slope",
+      "late_slope",
+      "accel_ratio",
+      "dq_logstd"
+    ],
+    "selection_rule": "Explicit whitelist only. Core6 are candidates, not validated final features. Metadata never selected automatically."
+  },
+  "target": {
+    "task": "regression",
+    "prediction_cycle": 100,
+    "source": "life",
+    "column": "target_log10",
+    "transform": "log10(life)",
+    "inverse": "10 ** prediction",
+    "unit": "cycles"
+  },
+  "cohort": {
+    "raw_total": 139,
+    "usable_total": 118,
+    "raw_by_batch": {
+      "B1": 46,
+      "B2": 47,
+      "B3": 46
+    },
+    "usable_by_batch": {
+      "B1": 36,
+      "B2": 39,
+      "B3": 43
+    },
+    "life_range_cycles": [
+      392,
+      1935
+    ],
+    "extra_varcharge_cells_excluded": 2,
+    "mat_files": {
+      "B1": "2017-05-12_batchdata_updated_struct_errorcorrect.mat",
+      "B2": "2018-02-20_batchdata_updated_struct_errorcorrect.mat",
+      "B3": "2018-04-12_batchdata_updated_struct_errorcorrect.mat"
+    },
+    "exclusions": {
+      "B1": "10 cells ended above 0.885Ah",
+      "B2": "8 cells with NaN cycle_life",
+      "B3": "2 censored cells + C38 official collection problem"
+    },
+    "caveats": [
+      "B1/B3 near-EOL labels usually last recorded cycle+1, not directly observed threshold crossing",
+      "B2 date differs from paper; do not reuse paper 124-cell split",
+      "Censored exclusion may bias lifetime distribution"
+    ]
+  }
+}

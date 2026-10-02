@@ -1,0 +1,25 @@
+[project]
+name = "skala-ds-mini-project"
+version = "0.1.0"
+description = "Early battery cycle-life prediction and batch evaluation"
+requires-python = "==3.11.11"
+dependencies = [
+    "numpy>=1.26,<3",
+    "pandas>=2.2,<3",
+    "scipy>=1.12,<2",
+    "h5py>=3.11,<4",
+    "matplotlib>=3.8,<4",
+    "scikit-learn>=1.5,<2",
+    "joblib>=1.4,<2",
+    "threadpoolctl>=3.5,<4",
+    "xgboost>=2.1,<4",
+    "lightgbm>=4.5,<5",
+    "catboost>=1.2,<2",
+    "nbformat>=5.10,<6",
+    "nbclient>=0.10,<1",
+    "ipykernel>=6.29,<8",
+    "jupyterlab>=4.2,<5",
+]
+
+[tool.uv]
+package = false

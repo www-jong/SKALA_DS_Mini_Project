@@ -1,0 +1,26 @@
+# 로컬 실행 환경과 Python/Jupyter 임시 파일
+.venv/
+__pycache__/
+*.py[cod]
+.ipynb_checkpoints/
+.jupyter/
+.mplconfig/
+.uv-cache/
+.uv-python/
+.DS_Store
+
+# 원본은 별도 준비. 빈 raw 디렉토리 표시만 제출한다.
+/data/raw/*
+!/data/raw/.gitkeep
+*.mat
+
+# 중간 데이터, 피처, 실험 기록, 학습 모델
+/.cache/
+*.pkl
+*.joblib
+*.log
+
+# 개인 환경변수
+.env
+.env.*
+!.env.example
